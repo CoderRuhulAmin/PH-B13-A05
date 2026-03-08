@@ -300,6 +300,65 @@
         </section>
 
 
+        <section id="modal-section" class="py-10">
+            <!-- Open the modal using ID.showModal() method -->
+            <!-- <button class="btn" onclick="my_modal_5.showModal()">open modal</button> -->
+            <dialog id="issue_modal" class="modal modal-body sm:modal-middle">
+                <div class="modal-box">
+                    <div id="details-container" class="inner-box border border-gray-200 rounded-xl p-5 space-y-5">
+                        <!-- Modal content -->
+                        <div class="card w-full bg-white space-y-4 py-4 z-2">
+                            <div class="flex flex-wrap gap-2 justify-between items-center px-4">
+                                <div class="status-icon w-6 h-6 rounded-full bg-purple-200 flex justify-center items-center">
+                                    <div class="w-4 h-4 rounded-full border-2 border-purple-600 flex justify-center items-center">
+                                        <span class="text-purple-600 block text-[8px] font-extrabold"><i class="fa-solid fa-check"></i></span>
+                                    </div>
+                                </div>
+                                <div class="priority-btn btn w-20 h-6 rounded-full p-[6px] bg-gray-100 text-[12px] font-medium text-gray-600">LOW</div>
+                            </div>
+                            <div class="px-4 space-y-2">
+                                <h2 class="text-[14px] font-semibold">Fix navigation menu on mobile devices</h2>
+                                <div class="flex items-center gap-2">
+                                    <span class="rounded-full border-0 px-2 py-1 bg-green-600 text-[12px] font-medium text-white">Opened</span>
+                                    <span class="inline-block w-1 h-1 rounded-full bg-gray-500"></span>
+                                    <span class="text-[#64748B]">Opened by Fahim Ahmed</span>
+                                    <span class="inline-block w-1 h-1 rounded-full bg-gray-500"></span>
+                                    <span class="text-[#64748B]">22/02/2026</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2 items-center">
+                                    <div class="priority-btn btn h-6 border-2 border-red-200 rounded-full px-[8px] bg-red-100 text-[12px] font-medium text-red-600">
+                                        <i class="fa-solid fa-bug-slash"></i>
+                                        BUG
+                                    </div>
+                                    <div class="priority-btn btn h-6 border-2 border-yellow-200 rounded-full px-[8px] bg-yellow-100 text-[12px] font-medium text-yellow-600">
+                                        <i class="fa-solid fa-life-ring"></i>
+                                        HELP WANTED
+                                    </div>
+                                </div>
+                                <p class="text-[12px] text-[#64748B] line-clamp-2">The navigation menu doesn't collapse properly on mobile devices. Need to fix the responsive behavior.</p>
+                            
+                                <div class="grid grid-cols-1 md:grid-cols-2 bg-gray-100 rounded-xl py-4">
+                                    <div class="ps-4">
+                                        <p class="text-[#64748B]">Assignee: </p>
+                                        <h3 class="font-semibold">Fahim Ahmed</h3>
+                                    </div>
+                                    <div class="ps-4">
+                                        <p class="text-[#64748B]">Priority: </p>
+                                        <div class="btn h-6 border-0 rounded-full px-[8px] bg-red-600 text-white text-[12px] font-medium">HIGH</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-action">
+                    <form method="dialog">
+                        <!-- if there is a button in form, it will close the modal -->
+                        <button class="btn btn-primary">Close</button>
+                    </form>
+                    </div>
+                </div>
+            </dialog>
+        </section>
     </main>
 
     <footer class="bg-white">
