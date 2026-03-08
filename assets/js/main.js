@@ -1,5 +1,5 @@
 const tabs = document.querySelectorAll(".issue-btn");
-let currentTab = "all";
+// let currentTab = "all";
 
 const manageIssueSpinner = (status) => {
     if(status === true){
@@ -134,7 +134,7 @@ const loadIssues = async (tab = "all") =>  {
     const data = await res.json();
     const issues = data.data;
     
-    currentTab = tab;
+    // currentTab = tab;
     let filteredIssues = issues.filter((issue) => {
         if(tab.toLowerCase() == "all") return true;
         return issue.status.toLowerCase() == tab.toLowerCase();
@@ -253,8 +253,8 @@ tabs.forEach(tab => {
         tabs.forEach(t => t.classList.remove("active"));
         tab.classList.add("active");
 
-        currentTab = tab.dataset.tab;
-        loadIssues(currentTab);
+        // currentTab = tab.dataset.tab;
+        // loadIssues(currentTab);
     });
 });
 loadIssues();
