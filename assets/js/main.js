@@ -1,5 +1,19 @@
 const tabs = document.querySelectorAll(".issue-btn");
 let currentTab = "all";
+
+const manageIssueSpinner = (status) => {
+    if(status === true){
+        document.getElementById('issue-spinner').classList.remove('hidden');
+        document.getElementById('issue-spinner').classList.add('flex');
+        document.getElementById('issue-list').classList.add('hidden');
+    } else {
+        document.getElementById('issue-spinner').classList.add('hidden');
+        document.getElementById('issue-spinner').classList.remove('flex');
+        document.getElementById('issue-list').classList.remove('hidden');
+    }
+}
+
+
 const createElements = (arr) => {
 
     const htmlElements = arr.map((el) => {
@@ -38,6 +52,7 @@ const createTopColoredStripe = (status) => {
         return `<div id="top-colored-stripe" class="h-4 w-full bg-purple-600 absolute top-0"></div>`;
     }
 }
+
 const createStatusCircle = (status) => {
     // console.log(status)
     if(status.toLowerCase() === "open"){
@@ -58,6 +73,31 @@ const createStatusCircle = (status) => {
     }
 }
 
+const createStatusBtnForDetails = (issue) => {
+    // console.log(status)
+    if(issue.status.toLowerCase() === "open"){
+        return `
+            <div class="flex items-center gap-2">
+                <span class="rounded-full border-0 px-2 py-1 bg-green-600 text-[12px] font-medium text-white">Opened</span>
+                <span class="inline-block w-1 h-1 rounded-full bg-gray-500"></span>
+                <span class="text-[#64748B]">Opened by ${issue.author}</span>
+                <span class="inline-block w-1 h-1 rounded-full bg-gray-500"></span>
+                <span class="text-[#64748B]">${new Date(issue.createdAt).toLocaleDateString()}</span>
+            </div>
+        `;
+    }else if(issue.status.toLowerCase() === "closed"){
+        return `
+            <div class="flex items-center gap-2">
+                <span class="rounded-full border-0 px-2 py-1 bg-purple-600 text-[12px] font-medium text-white">Closed</span>
+                <span class="inline-block w-1 h-1 rounded-full bg-gray-500"></span>
+                <span class="text-[#64748B]">Closed by ${issue.assignee}</span>
+                <span class="inline-block w-1 h-1 rounded-full bg-gray-500"></span>
+                <span class="text-[#64748B]">${new Date(issue.updatedAt).toLocaleDateString()}</span>
+            </div>
+        `;
+    }
+}
+
 const createPriorityBtn = (priority) => {
     // console.log(priority)
     if(priority.toUpperCase() === "HIGH"){
@@ -69,15 +109,24 @@ const createPriorityBtn = (priority) => {
     }
 }
 
+const createPriorityBtn2 = (priority) => {
+    // console.log(priority)
+    if(priority.toUpperCase() === "HIGH"){
+        return `<div class="priority-btn btn w-20 h-6 rounded-full p-[6px] bg-red-600 text-[12px] font-medium text-white">${priority.toUpperCase()}</div>`;
+    }else if(priority.toUpperCase() === "MEDIUM"){
+        return `<div class="priority-btn btn w-20 h-6 rounded-full p-[6px] bg-yellow-600 text-[12px] font-medium text-white">${priority.toUpperCase()}</div>`;
+    }else{
+        return `<div class="priority-btn btn w-20 h-6 rounded-full p-[6px] bg-gray-600 text-[12px] font-medium text-white">${priority.toUpperCase()}</div>`;
+    }
+}
+
 const removeActive = () => {
-    const issueButtons = document.querySelectorAll('.issue-btn');
-    // console.log(issueButtons);
-    issueButtons.forEach((btn) => btn.classList.remove('active'));
+    tabs.forEach((btn) => btn.classList.remove('active'));
 }
 
 
 const loadIssues = async (tab = "all") =>  {
-    // manageWordSpinner(true);
+    manageIssueSpinner(true);
     const url = `https://phi-lab-server.vercel.app/api/v1/lab/issues`;
     
 
@@ -106,31 +155,12 @@ const displayIssues = (issues) => {
         issueList.innerHTML = `
             <div class="col-span-3 text-center py-10 space-y-5">
                 <div class="text-8xl bg-gradient-to-r from-[#FDFDFD] to-[#79716B] bg-clip-text text-transparent"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                <p class="font-bangla text-[#79716B]">এই Lesson এ এখনো কোন Vocabulary যুক্ত করা হয়নি।</p>
-                <p class="font-bangla font-medium text-4xl">নেক্সট Lesson এ যান</p>
+                <p class="text-4xl text-[#79716B]">Issue not found!</p>
             </div>
         `;
-        // manageWordSpinner(false);
+        manageIssueSpinner(false);
         return;
     }
-
-
-    // {
-    //   "id": 1,
-    //   "title": "Fix navigation menu on mobile devices",
-    //   "description": "The navigation menu doesn't collapse properly on mobile devices. Need to fix the responsive behavior.",
-    //   "status": "open",
-    //   "labels": [
-    //     "bug",
-    //     "help wanted"
-    //   ],
-    //   "priority": "high",
-    //   "author": "john_doe",
-    //   "assignee": "jane_smith",
-    //   "createdAt": "2024-01-15T10:30:00Z",
-    //   "updatedAt": "2024-01-15T10:30:00Z"
-    // },
-
 
 
     // 2. get every words into separate div
@@ -139,7 +169,7 @@ const displayIssues = (issues) => {
         // 3. create card element and put data into it
         const card = document.createElement('div');
         card.innerHTML = `
-            <div class="issue-card rounded-lg overflow-hidden relative cursor-pointer" onclick="issue_modal.showModal()">
+            <div class="issue-card rounded-lg overflow-hidden relative cursor-pointer" onclick="loadIssueDetail(${item.id})">
                 
                 <!-- Top colored stripe -->
                 ${createTopColoredStripe(item.status)}
@@ -171,7 +201,50 @@ const displayIssues = (issues) => {
         // 4. Created Card append into wordContainer
         issueList.appendChild(card);
     });
-    // manageWordSpinner(false);
+    manageIssueSpinner(false);
+}
+
+const loadIssueDetail = async (id) => {
+    const url = `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`;
+    console.log(url);
+    const res = await fetch(url);
+    const details = await res.json();
+    displayIssueDetail(details.data);
+}
+const displayIssueDetail = (issue) => {
+    const detailsContainer = document.getElementById('details-container');
+    detailsContainer.innerHTML = `
+        <div class="card w-full bg-white space-y-4 py-4 z-2">
+            <div class="flex flex-wrap gap-2 justify-between items-center px-4">
+                ${createStatusCircle(issue.status)}
+                        
+                ${createPriorityBtn(issue.priority)}
+            </div>
+            <div class="px-4 space-y-2">
+                <h2 class="text-[14px] font-semibold">${issue.title}</h2>
+                ${createStatusBtnForDetails(issue)}
+                <div class="flex flex-wrap gap-2 items-center">
+                    ${createElements(issue.labels)}
+                </div>
+                <p class="text-[12px] text-[#64748B] line-clamp-2">
+                    ${issue.description}
+                </p>
+            
+                <div class="grid grid-cols-1 md:grid-cols-2 bg-gray-100 rounded-xl py-4">
+                    <div class="ps-4">
+                        <p class="text-[#64748B]">Assignee: </p>
+                        <h3 class="font-semibold">${issue.assignee}</h3>
+                    </div>
+                    <div class="ps-4">
+                        <p class="text-[#64748B]">Priority: </p>
+                        ${createPriorityBtn2(issue.priority)}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+     
+    document.getElementById('issue_modal').showModal();
 }
 
 // Tab switching
@@ -181,7 +254,48 @@ tabs.forEach(tab => {
         tab.classList.add("active");
 
         currentTab = tab.dataset.tab;
-        renderJobs(currentTab);
+        loadIssues(currentTab);
     });
 });
 loadIssues();
+
+document.querySelector('.btn-search').addEventListener("click", async ()=> {
+    manageIssueSpinner(true);
+    removeActive();
+
+    const input = document.querySelector('.input-search');
+    const searchValue = input.value.trim().toLowerCase();
+    console.log(searchValue);
+
+    const url = "https://phi-lab-server.vercel.app/api/v1/lab/issues";
+    const res = await fetch(url);
+    const data = await res.json();
+    const issues = data.data;
+    // console.log(issues);
+
+    const filterIssues = issues.filter(issue => {
+        return issue.title.toLowerCase().includes(searchValue);
+    });
+    console.log(filterIssues);
+    displayIssues(filterIssues);
+});
+document.querySelector('#btn-search').addEventListener("click", async ()=> {
+    manageIssueSpinner(true);
+    removeActive();
+
+    const input = document.querySelector('#input-search');
+    const searchValue = input.value.trim().toLowerCase();
+    console.log(searchValue);
+
+    const url = "https://phi-lab-server.vercel.app/api/v1/lab/issues";
+    const res = await fetch(url);
+    const data = await res.json();
+    const issues = data.data;
+    // console.log(issues);
+
+    const filterIssues = issues.filter(issue => {
+        return issue.title.toLowerCase().includes(searchValue);
+    });
+    console.log(filterIssues);
+    displayIssues(filterIssues);
+});
