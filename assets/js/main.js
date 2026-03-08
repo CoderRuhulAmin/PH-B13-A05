@@ -1,3 +1,5 @@
+const tabs = document.querySelectorAll(".issue-btn");
+let currentTab = "all";
 const createElements = (arr) => {
 
     const htmlElements = arr.map((el) => {
@@ -171,4 +173,15 @@ const displayIssues = (issues) => {
     });
     // manageWordSpinner(false);
 }
+
+// Tab switching
+tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+
+        currentTab = tab.dataset.tab;
+        renderJobs(currentTab);
+    });
+});
 loadIssues();
