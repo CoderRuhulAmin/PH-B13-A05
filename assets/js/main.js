@@ -83,8 +83,13 @@ const loadIssues = async (tab = "all") =>  {
     const data = await res.json();
     const issues = data.data;
     
-   
-    displayIssues(issues);
+    currentTab = tab;
+    let filteredIssues = issues.filter((issue) => {
+        if(tab.toLowerCase() == "all") return true;
+        return issue.status.toLowerCase() == tab.toLowerCase();
+    });
+    // console.log(filteredIssues);
+    displayIssues(filteredIssues);
 
 }
 const displayIssues = (issues) => {
