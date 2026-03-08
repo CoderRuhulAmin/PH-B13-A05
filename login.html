@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="shortcut icon" href="./assets/images/Aperture.png" type="image/x-icon">
+    
+    <title>Login | Github Issue Tracker</title>
+    
+    <!-- FontAwesome Icons CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"/>
+
+    <!-- Tailwind & DaisyUI -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./assets/css/custom.css">
+
+</head>
+<body class="h-screen flex justify-center items-center bg-base-300">
+
+    <div class="card bg-base-100 w-full max-w-sm shrink-0 p-8 shadow-lg">
+        <div class="hero-content p-0 flex-col space-y-1">
+            <div class="text-center w-full flex flex-col">
+                <img class="mx-auto mb-3 h-[100px]" src="./assets/images/github-logo.png" alt="">
+                <h2 class="text-2xl font-semibold">GitHub Issues Tracker</h2>
+                <p class="text-[#64748B]">Sign in to manage your issues</p>
+            </div>
+            <div class="card-body w-full p-0">
+                <fieldset class="fieldset">
+                    <label class="label text-black font-semibold">Username</label>
+                    <input type="text" class="input" placeholder="Enter Username" />
+                    <span class="text-primary">Default: admin</span>
+
+                    <label class="label text-black font-semibold">Password</label>
+                    <input type="password" class="input" placeholder="Password" />
+                    <span class="text-primary">Default: admin123</span>
+                    <button class="btn btn-neutral mt-4">Login</button>
+                </fieldset>
+                <div class="flex justify-center items-center">
+                    <div class="flex-grow border-t border-gray-300"></div>
+                    <span class="mx-4 text-gray-500 font-medium">OR</span>
+                    <div class="flex-grow border-t border-gray-300"></div>
+                </div>
+                <div class="text-center space-y-2">
+                    <h5>Demo Credentials:</h5>
+                    <div class="bg-gray-100 rounded-xl p-5 space-y-1">
+                        <p><strong>Username: </strong>admin</p>
+                        <p><strong>Password: </strong>admin123</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="./assets/js/data.js"></script>
+    <script src="./assets/js/main.js"></script>
+</body>
+</html>
