@@ -6,7 +6,7 @@
     
     <link rel="shortcut icon" href="./assets/images/Aperture.png" type="image/x-icon">
     
-    <title>Home | Github Issue Tracker</title>
+    <title>Login | Github Issue Tracker</title>
     
     <!-- FontAwesome Icons CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"/>
@@ -19,369 +19,54 @@
     <link rel="stylesheet" href="./assets/css/custom.css">
 
 </head>
-<!-- <body class="bg-[#F8FAFC]"> -->
-<body class="bg-[#f5f5f5]">
-    <header class="sticky top-0 bg-white shadow-sm z-50">
-        <div class="navbar w-11/12 lg:w-10/12 mx-auto">
-            <div class="navbar-start">
-                <a href="/index.html" class="flex items-center gap-1">
-                    <img class="max-h-9" src="./assets/images/github-logo.png" alt="">
-                    <span class="text-2xl font-semibold hidden lg:block">GitHub Issues Tracker</span>
-                </a>
+<body class="h-screen flex justify-center items-center bg-base-300">
+
+    <div class="card bg-base-100 w-full max-w-sm shrink-0 p-8 shadow-lg">
+        <div class="hero-content p-0 flex-col space-y-1">
+            <div class="text-center w-full flex flex-col">
+                <img class="mx-auto mb-3 h-[100px]" src="./assets/images/github-logo.png" alt="">
+                <h2 class="text-2xl font-semibold">GitHub Issues Tracker</h2>
+                <p class="text-[#64748B]">Sign in to manage your issues</p>
             </div>
-            <div id="search-box" class="min-w-[300px] text-center hidden md:block">
-                <label class="input input-bordered flex items-center gap-2">
-                    <input id="input-search" type="search" required placeholder="Search issues..." />
-                    <button id="btn-search" class=""><i class="fa-solid fa-magnifying-glass"></i></button>
-                </label>
-            </div>
-            <div class="navbar-end">
-                <a href="#" class="btn btn-primary">+ New Issue</a>
+            <div class="card-body w-full p-0">
+                <p id="login-message" class="text-sm"></p>
+                <form id="login-form" class="login-form">
+
+                    <div>
+                        <label class="label text-black font-semibold">Username</label>
+                        <input id="username" type="text" class="input" placeholder="Enter Username" required/>
+                        <span class="text-primary">Default: admin</span>
+                    </div>
+
+                    <div>
+                        <label class="label text-black font-semibold">Password</label>
+                        <input id="password" type="password" class="input" placeholder="Password" required/>
+                        <span class="text-primary">Default: admin123</span>
+                    </div>
+
+                    <div>
+                        <button type="submit" class="btn w-full btn-neutral mt-4">Login</button>
+                    </div>
+
+                </form>
+                <div class="flex justify-center items-center">
+                    <div class="flex-grow border-t border-gray-300"></div>
+                    <span class="mx-4 text-gray-500 font-medium">OR</span>
+                    <div class="flex-grow border-t border-gray-300"></div>
+                </div>
+                <div class="text-center space-y-2">
+                    <h5>Demo Credentials:</h5>
+                    <div class="bg-gray-100 rounded-xl p-5 space-y-1">
+                        <p><strong>Username: </strong>admin</p>
+                        <p><strong>Password: </strong>admin123</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </header>
-    <main id="main" class="py-10">
-        <section id="issues-section" class="w-11/12 mx-auto lg:w-10/12">
-            <div id="status-filter" class="bg-white rounded-xl p-4 flex gap-3 mb-6">
-                <button id="status-filter-all" class="btn btn-outline border-gray-300 hover:border-primary hover:bg-primary hover:text-white transition-all duration-300 ease-in-out">All</button>
-                <button id="status-filter-open" class="btn btn-outline border-gray-300 hover:border-primary hover:bg-primary hover:text-white transition-all duration-300 ease-in-out">Open</button>
-                <button id="status-filter-closed" class="btn btn-outline border-gray-300 hover:border-primary hover:bg-primary hover:text-white transition-all duration-300 ease-in-out">Closed</button>
-            </div>
-            <div id="issues-container" class="border border-gray-300 rounded-xl">
-                <div class="issues-header bg-white rounded-t-xl flex justify-between items-center p-4 mb-6">
-                    <div class="issues-title flex items-center gap-3">
-                        <div class="w-[50px] h-[50px] rounded-full bg-purple-200 flex justify-center items-center">
-                            <img src="./assets/images/Aperture.png" class="w-8 h-8 block" alt="">
-                        </div>
-                        <div>
-                            <h2 class="text-xl font-semibold">50 Issues</h2>
-                            <p class="text-[#64748B]">Track and manage your project issues</p>
-                        </div>
-                    </div>
-                    <div class="issues-status-legend flex gap-3">
-                        <div class="font-medium flex items-center">
-                            <span class="w-3 h-3 bg-green-600 rounded-full inline-block mr-2"></span>
-                            Open
-                        </div>
-                        <div class="font-medium flex items-center">
-                            <span class="w-3 h-3 bg-purple-600 rounded-full inline-block mr-2"></span>
-                            closed
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="issues-list" class="issues-grid grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4 p-4">
-                    <div class="issue-card rounded-lg overflow-hidden relative cursor-pointer" onclick="issue_modal.showModal()">
-                        <!-- Top colored stripe -->
-                        <div class="h-4 w-full bg-green-600 absolute top-0"></div>
-
-                        <!-- Card content -->
-                        <div class="card w-full bg-white shadow-md mt-1 space-y-4 py-4 z-2">
-                            <div class="flex flex-wrap gap-2 justify-between items-center px-4">
-                                <div class="status-icon w-6 h-6 rounded-full bg-green-200 flex justify-center items-center">
-                                    <div class="w-4 h-4 rounded-full border-2 border-green-600 border-dashed flex justify-center items-center">
-                                    </div>
-                                </div>
-                                <div class="status-icon w-6 h-6 rounded-full bg-purple-200 flex justify-center items-center">
-                                    <div class="w-4 h-4 rounded-full border-2 border-purple-600 flex justify-center items-center">
-                                        <span class="text-purple-600 block text-[8px] font-extrabold"><i class="fa-solid fa-check"></i></span>
-                                    </div>
-                                </div>
-                                <div class="priority-btn btn w-20 h-6 rounded-full p-[6px] bg-red-100 text-[12px] font-medium text-red-600">HIGH</div>
-                                <div class="priority-btn btn w-20 h-6 rounded-full p-[6px] bg-yellow-100 text-[12px] font-medium text-yellow-600">MEDIUM</div>
-                                <div class="priority-btn btn w-20 h-6 rounded-full p-[6px] bg-gray-100 text-[12px] font-medium text-gray-600">LOW</div>
-                            </div>
-                            <div class="px-4 space-y-2">
-                                <h2 class="text-[14px] font-semibold">Fix navigation menu on mobile devices</h2>
-                                <p class="text-[12px] text-[#64748B] line-clamp-2">The navigation menu doesn't collapse properly on mobile devices | The navigation menu doesn't collapse properly on mobile devices</p>
-                                
-                                <div class="flex flex-wrap gap-2 items-center">
-                                    <button class="priority-btn btn h-6 border-2 border-red-200 rounded-full px-[8px] bg-red-100 text-[12px] font-medium text-red-600">
-                                        <i class="fa-solid fa-bug-slash"></i>
-                                        BUG
-                                    </button>
-                                    <div class="priority-btn btn h-6 border-2 border-yellow-200 rounded-full px-[8px] bg-yellow-100 text-[12px] font-medium text-yellow-600">
-                                        <i class="fa-solid fa-life-ring"></i>
-                                        HELP WANTED
-                                    </div>
-                                    <div class="priority-btn btn h-6 border-2 border-green-200 rounded-full px-[8px] bg-green-100 text-[12px] font-medium text-green-600">
-                                        <i class="fa-solid fa-paint-roller"></i>
-                                        ENHANCEMENT
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="border-t-2 border-gray-300"></div>
-                            <div class="px-4">
-                                <p class="text-[12px] text-[#64748B] mb-2">#1 by john_doe</p>
-                                <p class="text-[12px] text-[#64748B]">1/15/2024</p>
-                            </div>
-                        </div>
-                    </div>
-                   
-                    <div class="issue-card rounded-lg overflow-hidden relative cursor-pointer" onclick="issue_modal.showModal()">
-                        <!-- Top colored stripe -->
-                        <div class="h-4 w-full bg-green-600 absolute top-0"></div>
-
-                        <!-- Card content -->
-                        <div class="card w-full bg-white shadow-md mt-1 space-y-4 py-4 z-2">
-                            <div class="flex flex-wrap gap-2 justify-between items-center px-4">
-                                <div class="status-icon w-6 h-6 rounded-full bg-green-200 flex justify-center items-center">
-                                    <div class="w-4 h-4 rounded-full border-2 border-green-600 border-dashed flex justify-center items-center">
-                                    </div>
-                                </div>
-                                <div class="priority-btn btn w-20 h-6 rounded-full p-[6px] bg-red-100 text-[12px] font-medium text-red-600">HIGH</div>
-                            </div>
-                            <div class="px-4 space-y-2">
-                                <h2 class="text-[14px] font-semibold">Fix navigation menu on mobile devices</h2>
-                                <p class="text-[12px] text-[#64748B] line-clamp-2">The navigation menu doesn't collapse properly on mobile devices | The navigation menu doesn't collapse properly on mobile devices</p>
-                                
-                                <div class="flex flex-wrap gap-2 items-center">
-                                    <button class="priority-btn btn h-6 border-2 border-red-200 rounded-full px-[8px] bg-red-100 text-[12px] font-medium text-red-600">
-                                        <i class="fa-solid fa-bug-slash"></i>
-                                        BUG
-                                    </button>
-                                    <div class="priority-btn btn h-6 border-2 border-yellow-200 rounded-full px-[8px] bg-yellow-100 text-[12px] font-medium text-yellow-600">
-                                        <i class="fa-solid fa-life-ring"></i>
-                                        HELP WANTED
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="border-t-2 border-gray-300"></div>
-                            <div class="px-4">
-                                <p class="text-[12px] text-[#64748B] mb-2">#1 by john_doe</p>
-                                <p class="text-[12px] text-[#64748B]">1/15/2024</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="issue-card rounded-lg overflow-hidden relative cursor-pointer" onclick="issue_modal.showModal()">
-                        <!-- Top colored stripe -->
-                        <div class="h-4 w-full bg-green-600 absolute top-0"></div>
-
-                        <!-- Card content -->
-                        <div class="card w-full bg-white shadow-md mt-1 space-y-4 py-4 z-2">
-                            <div class="flex flex-wrap gap-2 justify-between items-center px-4">
-                                <div class="status-icon w-6 h-6 rounded-full bg-purple-200 flex justify-center items-center">
-                                    <div class="w-4 h-4 rounded-full border-2 border-purple-600 flex justify-center items-center">
-                                        <span class="text-purple-600 block text-[8px] font-extrabold"><i class="fa-solid fa-check"></i></span>
-                                    </div>
-                                </div>
-                                <div class="priority-btn btn w-20 h-6 rounded-full p-[6px] bg-red-100 text-[12px] font-medium text-red-600">HIGH</div>
-                            </div>
-                            <div class="px-4 space-y-2">
-                                <h2 class="text-[14px] font-semibold">Fix navigation menu on mobile devices</h2>
-                                <p class="text-[12px] text-[#64748B] line-clamp-2">The navigation menu doesn't collapse properly on mobile devices | The navigation menu doesn't collapse properly on mobile devices</p>
-                                
-                                <div class="flex flex-wrap gap-2 items-center">
-                                    <button class="priority-btn btn h-6 border-2 border-red-200 rounded-full px-[8px] bg-red-100 text-[12px] font-medium text-red-600">
-                                        <i class="fa-solid fa-bug-slash"></i>
-                                        BUG
-                                    </button>
-                                    <div class="priority-btn btn h-6 border-2 border-yellow-200 rounded-full px-[8px] bg-yellow-100 text-[12px] font-medium text-yellow-600">
-                                        <i class="fa-solid fa-life-ring"></i>
-                                        HELP WANTED
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="border-t-2 border-gray-300"></div>
-                            <div class="px-4">
-                                <p class="text-[12px] text-[#64748B] mb-2">#1 by john_doe</p>
-                                <p class="text-[12px] text-[#64748B]">1/15/2024</p>
-                            </div>
-                        </div>
-                    </div>
-                   
-                    <div class="issue-card rounded-lg overflow-hidden relative cursor-pointer" onclick="issue_modal.showModal()">
-                        <!-- Top colored stripe -->
-                        <div class="h-4 w-full bg-green-600 absolute top-0"></div>
-
-                        <!-- Card content -->
-                        <div class="card w-full bg-white shadow-md mt-1 space-y-4 py-4 z-2">
-                            <div class="flex flex-wrap gap-2 justify-between items-center px-4">
-                                <div class="status-icon w-6 h-6 rounded-full bg-green-200 flex justify-center items-center">
-                                    <div class="w-4 h-4 rounded-full border-2 border-green-600 border-dashed flex justify-center items-center">
-                                    </div>
-                                </div>
-                                <div class="priority-btn btn w-20 h-6 rounded-full p-[6px] bg-gray-100 text-[12px] font-medium text-gray-600">LOW</div>
-                            </div>
-                            <div class="px-4 space-y-2">
-                                <h2 class="text-[14px] font-semibold">Fix navigation menu on mobile devices</h2>
-                                <p class="text-[12px] text-[#64748B] line-clamp-2">The navigation menu doesn't collapse properly on mobile devices | The navigation menu doesn't collapse properly on mobile devices</p>
-                                
-                                <div class="flex flex-wrap gap-2 items-center">
-                                    <div class="priority-btn btn h-6 border-2 border-green-200 rounded-full px-[8px] bg-green-100 text-[12px] font-medium text-green-600">
-                                        <i class="fa-solid fa-paint-roller"></i>
-                                        ENHANCEMENT
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="border-t-2 border-gray-300"></div>
-                            <div class="px-4">
-                                <p class="text-[12px] text-[#64748B] mb-2">#1 by john_doe</p>
-                                <p class="text-[12px] text-[#64748B]">1/15/2024</p>
-                            </div>
-                        </div>
-                    </div>
-                   
-                    <div class="issue-card rounded-lg overflow-hidden relative cursor-pointer" onclick="issue_modal.showModal()">
-                        <!-- Top colored stripe -->
-                        <div class="h-4 w-full bg-green-600 absolute top-0"></div>
-
-                        <!-- Card content -->
-                        <div class="card w-full bg-white shadow-md mt-1 space-y-4 py-4 z-2">
-                            <div class="flex flex-wrap gap-2 justify-between items-center px-4">
-                                <div class="status-icon w-6 h-6 rounded-full bg-purple-200 flex justify-center items-center">
-                                    <div class="w-4 h-4 rounded-full border-2 border-purple-600 flex justify-center items-center">
-                                        <span class="text-purple-600 block text-[8px] font-extrabold"><i class="fa-solid fa-check"></i></span>
-                                    </div>
-                                </div>
-                                <div class="priority-btn btn w-20 h-6 rounded-full p-[6px] bg-gray-100 text-[12px] font-medium text-gray-600">LOW</div>
-                            </div>
-                            <div class="px-4 space-y-2">
-                                <h2 class="text-[14px] font-semibold">Fix navigation menu on mobile devices</h2>
-                                <p class="text-[12px] text-[#64748B] line-clamp-2">The navigation menu doesn't collapse properly on mobile devices | The navigation menu doesn't collapse properly on mobile devices</p>
-                                
-                                <div class="flex flex-wrap gap-2 items-center">
-                                    <button class="priority-btn btn h-6 border-2 border-red-200 rounded-full px-[8px] bg-red-100 text-[12px] font-medium text-red-600">
-                                        <i class="fa-solid fa-bug-slash"></i>
-                                        BUG
-                                    </button>
-                                    <div class="priority-btn btn h-6 border-2 border-yellow-200 rounded-full px-[8px] bg-yellow-100 text-[12px] font-medium text-yellow-600">
-                                        <i class="fa-solid fa-life-ring"></i>
-                                        HELP WANTED
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="border-t-2 border-gray-300"></div>
-                            <div class="px-4">
-                                <p class="text-[12px] text-[#64748B] mb-2">#1 by john_doe</p>
-                                <p class="text-[12px] text-[#64748B]">1/15/2024</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="issue-card rounded-lg overflow-hidden relative cursor-pointer" onclick="issue_modal.showModal()">
-                        <!-- Top colored stripe -->
-                        <div class="h-4 w-full bg-green-600 absolute top-0"></div>
-
-                        <!-- Card content -->
-                        <div class="card w-full bg-white shadow-md mt-1 space-y-4 py-4 z-2">
-                            <div class="flex flex-wrap gap-2 justify-between items-center px-4">
-                                <div class="status-icon w-6 h-6 rounded-full bg-green-200 flex justify-center items-center">
-                                    <div class="w-4 h-4 rounded-full border-2 border-green-600 border-dashed flex justify-center items-center">
-                                    </div>
-                                </div>
-                                <div class="priority-btn btn w-20 h-6 rounded-full p-[6px] bg-yellow-100 text-[12px] font-medium text-yellow-600">MEDIUM</div>
-                            </div>
-                            <div class="px-4 space-y-2">
-                                <h2 class="text-[14px] font-semibold">Fix navigation menu on mobile devices</h2>
-                                <p class="text-[12px] text-[#64748B] line-clamp-2">The navigation menu doesn't collapse properly on mobile devices | The navigation menu doesn't collapse properly on mobile devices</p>
-                                
-                                <div class="flex flex-wrap gap-2 items-center">
-                                    <button class="priority-btn btn h-6 border-2 border-red-200 rounded-full px-[8px] bg-red-100 text-[12px] font-medium text-red-600">
-                                        <i class="fa-solid fa-bug-slash"></i>
-                                        BUG
-                                    </button>
-                                    <div class="priority-btn btn h-6 border-2 border-green-200 rounded-full px-[8px] bg-green-100 text-[12px] font-medium text-green-600">
-                                        <i class="fa-solid fa-paint-roller"></i>
-                                        ENHANCEMENT
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="border-t-2 border-gray-300"></div>
-                            <div class="px-4">
-                                <p class="text-[12px] text-[#64748B] mb-2">#1 by john_doe</p>
-                                <p class="text-[12px] text-[#64748B]">1/15/2024</p>
-                            </div>
-                        </div>
-                    </div>
-                   
-
-                </div>
-            </div>
-        </section>
+    </div>
 
 
-        <section id="modal-section" class="py-10">
-            <!-- Open the modal using ID.showModal() method -->
-            <!-- <button class="btn" onclick="my_modal_5.showModal()">open modal</button> -->
-            <dialog id="issue_modal" class="modal modal-body sm:modal-middle">
-                <div class="modal-box">
-                    <div id="details-container" class="inner-box border border-gray-200 rounded-xl p-5 space-y-5">
-                        <!-- Modal content -->
-                        <div class="card w-full bg-white space-y-4 py-4 z-2">
-                            <div class="flex flex-wrap gap-2 justify-between items-center px-4">
-                                <div class="status-icon w-6 h-6 rounded-full bg-purple-200 flex justify-center items-center">
-                                    <div class="w-4 h-4 rounded-full border-2 border-purple-600 flex justify-center items-center">
-                                        <span class="text-purple-600 block text-[8px] font-extrabold"><i class="fa-solid fa-check"></i></span>
-                                    </div>
-                                </div>
-                                <div class="priority-btn btn w-20 h-6 rounded-full p-[6px] bg-gray-100 text-[12px] font-medium text-gray-600">LOW</div>
-                            </div>
-                            <div class="px-4 space-y-2">
-                                <h2 class="text-[14px] font-semibold">Fix navigation menu on mobile devices</h2>
-                                <div class="flex items-center gap-2">
-                                    <span class="rounded-full border-0 px-2 py-1 bg-green-600 text-[12px] font-medium text-white">Opened</span>
-                                    <span class="inline-block w-1 h-1 rounded-full bg-gray-500"></span>
-                                    <span class="text-[#64748B]">Opened by Fahim Ahmed</span>
-                                    <span class="inline-block w-1 h-1 rounded-full bg-gray-500"></span>
-                                    <span class="text-[#64748B]">22/02/2026</span>
-                                </div>
-                                <div class="flex flex-wrap gap-2 items-center">
-                                    <div class="priority-btn btn h-6 border-2 border-red-200 rounded-full px-[8px] bg-red-100 text-[12px] font-medium text-red-600">
-                                        <i class="fa-solid fa-bug-slash"></i>
-                                        BUG
-                                    </div>
-                                    <div class="priority-btn btn h-6 border-2 border-yellow-200 rounded-full px-[8px] bg-yellow-100 text-[12px] font-medium text-yellow-600">
-                                        <i class="fa-solid fa-life-ring"></i>
-                                        HELP WANTED
-                                    </div>
-                                </div>
-                                <p class="text-[12px] text-[#64748B] line-clamp-2">The navigation menu doesn't collapse properly on mobile devices. Need to fix the responsive behavior.</p>
-                            
-                                <div class="grid grid-cols-1 md:grid-cols-2 bg-gray-100 rounded-xl py-4">
-                                    <div class="ps-4">
-                                        <p class="text-[#64748B]">Assignee: </p>
-                                        <h3 class="font-semibold">Fahim Ahmed</h3>
-                                    </div>
-                                    <div class="ps-4">
-                                        <p class="text-[#64748B]">Priority: </p>
-                                        <div class="btn h-6 border-0 rounded-full px-[8px] bg-red-600 text-white text-[12px] font-medium">HIGH</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-action">
-                    <form method="dialog">
-                        <!-- if there is a button in form, it will close the modal -->
-                        <button class="btn btn-primary">Close</button>
-                    </form>
-                    </div>
-                </div>
-            </dialog>
-        </section>
-    </main>
-
-    <footer class="bg-white">
-        <div class="navbar w-11/12 lg:w-10/12 mx-auto">
-            <div class="navbar-start">
-                <a href="/index.html" class="flex items-center gap-1">
-                    <img class="max-h-9" src="./assets/images/github-logo.png" alt="">
-                    <span class="text-2xl font-semibold hidden lg:block">GitHub Issues Tracker</span>
-                </a>
-            </div>
-            <div id="search-box" class="min-w-[300px] text-center hidden md:block">
-                <label class="input input-bordered flex items-center gap-2">
-                    <input id="input-search" type="search" required placeholder="Search issues..." />
-                    <button id="btn-search" class=""><i class="fa-solid fa-magnifying-glass"></i></button>
-                </label>
-            </div>
-            <div class="navbar-end">
-                <a href="#" class="btn btn-primary">+ New Issue</a>
-            </div>
-        </div>
-    </footer>
-
-    <script src="./assets/js/data.js"></script>
+    <script src="./assets/js/login.js"></script>
     <script src="./assets/js/main.js"></script>
 </body>
 </html>
